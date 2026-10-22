@@ -1,0 +1,15 @@
+# Gizli bilgiler
+.env
+.env.*
+!.env.example
+
+# Kişisel veri (TC kimlik no içerir) — asla commit edilmez
+*.sql
+!docker/db/init/*.sql
+excel/*
+!excel/.gitkeep
+
+# Composer ile kurulur
+vendor/
+
+.DS_Store

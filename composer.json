@@ -1,0 +1,16 @@
+{
+    "name": "bursabbspor/sporokullari-kayit",
+    "description": "Bursa Büyükşehir Belediyespor Online Kayıt Sistemi",
+    "type": "project",
+    "require": {
+        "php": "^8.3",
+        "phpoffice/phpspreadsheet": "^5.10"
+    },
+    "config": {
+        "platform": {
+            "php": "8.3.0"
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

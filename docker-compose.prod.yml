@@ -1,0 +1,12 @@
+# Production: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+# Kod imajın içinde (bind-mount yok), php.ini-prod geçerli, TLS sunucudaki reverse proxy'de.
+services:
+  app:
+    image: bbb-sporokullari:latest
+    restart: unless-stopped
+    ports:
+      # Sadece reverse proxy erişsin
+      - "127.0.0.1:${APP_PORT:-8080}:80"
+
+  db:
+    restart: unless-stopped

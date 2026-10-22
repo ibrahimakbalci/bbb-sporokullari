@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# HTTPS yönlendirmesi: sadece FORCE_HTTPS=1 iken (prod). Reverse proxy arkasında
+# X-Forwarded-Proto kontrol edildiği için yönlendirme döngüsü oluşmaz.
+RewriteCond %{ENV:FORCE_HTTPS} =1
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Kütüphane, Docker ve Excel (TC kimlik içeren) klasörleri web'e kapalı
+RewriteRule ^(vendor|docker|excel|ezsql)(/|$) - [F,L]
+</IfModule>
+
+# Veritabanı dökümü, ortam ve yapılandırma dosyaları web'e kapalı
+<FilesMatch "(\.(sql|env|lock|md|ini|yml|yaml|log)|^\.env.*|^composer\.json|^Dockerfile)$">
+	Require all denied
+</FilesMatch>

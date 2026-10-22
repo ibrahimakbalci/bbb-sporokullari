@@ -1,0 +1,15 @@
+# Gizli / kişisel veri içeren dosyalar imaja girmez
+.env
+.env.*
+!.env.example
+*.sql
+excel/*.xlsx
+
+# Composer stage'de yeniden kurulur
+vendor/
+
+# Docker ve sistem dosyaları
+docker-compose*.yml
+docker/db/
+.git
+.DS_Store
