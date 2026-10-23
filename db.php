@@ -14,7 +14,16 @@ require_once('ezsql/ez_sql_core.php');
 require_once('ezsql/ez_sql_mysqli.php');
 require_once('fonksiyonlar.php');
 
-// Kimlik bilgileri ortam değişkenlerinden gelir (Docker: .env, Docker'sız sunucu: Apache SetEnv)
+// Kimlik bilgileri ortam değişkenlerinden gelir (Docker: compose .env'i aktarır).
+// Docker'sız sunucuda değişken yoksa site kökündeki .env okunur (.htaccess web erişimini engeller).
+if (getenv('DB_USER') === false && is_readable(__DIR__ . '/.env')) {
+	foreach (file(__DIR__ . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $satir) {
+		$satir = trim($satir);
+		if ($satir === '' || $satir[0] === '#' || strpos($satir, '=') === false) continue;
+		list($anahtar, $deger) = array_map('trim', explode('=', $satir, 2));
+		putenv($anahtar . '=' . trim($deger, "\"'"));
+	}
+}
 $wpdb = new ezSQL_mysqli(getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'), getenv('DB_HOST') ?: 'localhost', 'utf8');
 $wpdb->query("SET NAMES 'UTF8'");
 
