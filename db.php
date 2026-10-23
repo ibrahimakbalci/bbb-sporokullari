@@ -15,9 +15,11 @@ require_once('ezsql/ez_sql_mysqli.php');
 require_once('fonksiyonlar.php');
 
 // Kimlik bilgileri ortam değişkenlerinden gelir (Docker: compose .env'i aktarır).
-// Docker'sız sunucuda değişken yoksa site kökündeki .env okunur (.htaccess web erişimini engeller).
-if (getenv('DB_USER') === false && is_readable(__DIR__ . '/.env')) {
-	foreach (file(__DIR__ . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $satir) {
+// Docker'sız sunucuda değişken yoksa .env okunur: önce web kökünün dışı (bir üst klasör, önerilen),
+// yoksa site kökü (yalnızca .htaccess ile korunur).
+$env_dosyasi = is_readable(dirname(__DIR__) . '/.env') ? dirname(__DIR__) . '/.env' : __DIR__ . '/.env';
+if (getenv('DB_USER') === false && is_readable($env_dosyasi)) {
+	foreach (file($env_dosyasi, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $satir) {
 		$satir = trim($satir);
 		if ($satir === '' || $satir[0] === '#' || strpos($satir, '=') === false) continue;
 		list($anahtar, $deger) = array_map('trim', explode('=', $satir, 2));

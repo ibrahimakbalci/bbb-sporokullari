@@ -62,7 +62,7 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml exec -T db \
 ### Docker'sız hosting (cPanel vb.)
 
 1. Kodları ve `vendor/` klasörünü (`composer install --no-dev`) yükleyin.
-2. Site köküne (`index.php` ile aynı yere) `.env` koyun: `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`. Ortam değişkeni tanımlı değilse `db.php` bu dosyayı okur; `.htaccess` web erişimini engeller.
+2. `.env` dosyasını (`DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`) site kökünün **bir üst klasörüne** koyun (ör. `public_html/` değil, onun yanına). Ortam değişkeni tanımlı değilse `db.php` önce orayı, yoksa site kökünü okur. Site kökündeki `.env` yalnızca `.htaccess` ile korunur; sunucu `.htaccess` desteklemiyorsa indirilebilir.
 3. Mevcut veritabanında `docker/db/init/02-migration.sql`'i (phpMyAdmin → SQL) **ilk girişten önce** bir kez çalıştırın. Çalıştırılmazsa yeni şifre hash'leri `varchar(50)` sütuna kesilerek yazılır ve kullanıcılar ikinci girişte kilitlenir.
 
 Eski MD5 şifreler, kullanıcı ilk giriş yaptığında otomatik olarak `password_hash` (bcrypt) ile yenilenir.
